@@ -55,6 +55,7 @@ client.on("messageCreate", msg => {
       msg.content.substring(0, 11) === "t/setstatus"
     ) {
       client.user.setActivity(msg.content.substring(12));
+      msg.channel.send("complete");
     }
   }
 });
