@@ -47,6 +47,7 @@ client.on("messageCreate", msg => {
       }
     }
     if (msg.content === "t/logout") {
+      msg.channel.send("logout");
       process.exit(2);
     }
     if (
