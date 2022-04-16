@@ -6,14 +6,14 @@ const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
 });
 
-const logFilePath = "./log/log.txt";
+const msgLogFilePath = "./log/msglog.txt";
 
-function log(content) {
-  const text = `[${new Date().toString()}] ${content}`;
+function log(name, content) {
+  const text = `${new Date().toString()} [${name}] ${content}`;
   console.log(text);
 
-  !fs.existsSync(logFilePath) ? fs.writeFileSync(logFilePath, "") : null;
-  fs.appendFile(logFilePath, text + "\n", err => {
+  !fs.existsSync(msgLogFilePath) ? fs.writeFileSync(msgLogFilePath, "") : null;
+  fs.appendFile(msgLogFilePath, text + "\n", err => {
     if (err) throw err;
   });
 }
@@ -25,7 +25,8 @@ client.on("ready", () => {
 
 client.on("message", msg => {
   log(
-    `Message: "${msg.content}" @${msg.author.tag}(${msg.author.id}) ${msg.guild.name}(${msg.guild.id}) #${msg.channel.name}(${msg.channel.id})`
+    "Message Send",
+    `"${msg.content}" @${msg.author.tag}(${msg.author.id}) .${msg.guild.name}(${msg.guild.id}) #${msg.channel.name}(${msg.channel.id}) *${msg.id}`
   );
 
   if (msg.content === "ping") {
@@ -33,6 +34,18 @@ client.on("message", msg => {
       console.log(`Sent massage: "${msg.content}" to ${msg.channel}`);
     });
   }
+});
+client.on("messageUpdate", (oldMsg, newMsg) => {
+  log(
+    "Message Update",
+    `"${oldMsg.content}" => "${newMsg.content}" @${newMsg.author.tag}(${newMsg.author.id}) .${newMsg.guild.name}(${newMsg.guild.id}) #${newMsg.channel.name}(${newMsg.channel.id}) *${newMsg.id}`
+  );
+});
+client.on("messageDelete", msg => {
+  log(
+    "Message Delete",
+    `"${msg.content}" @${msg.author.tag}(${msg.author.id}) .${msg.guild.name}(${msg.guild.id}) #${msg.channel.name}(${msg.channel.id}) *${msg.id}`
+  );
 });
 
 client.login(token);
