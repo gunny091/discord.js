@@ -4,25 +4,26 @@ const {
   getCommandArgvOneString,
 } = require("./commandBase");
 const { getMsg } = require("./getMsg");
+const { sendMessage } = require("./sendMessage");
 
 function onAdminCommand(msg, client) {
   if (isThisCommand(msg.content, "exec")) {
     try {
       eval(getCommandArgvOneString(msg.content, "exec"));
-      msg.channel.send("complete");
+      sendMessage(msg.channel, "complete");
     } catch (e) {
-      msg.channel.send(String(e));
+      sendMessage(msg.channel, String(e));
     }
   }
   if (isThisCommand(msg.content, "logout")) {
-    msg.channel.send("logout");
+    sendMessage(msg.channel, "logout");
     setTimeout(() => {
       process.exit(2);
     }, 1000);
   }
   if (isThisCommand(msg.content, "setstatus")) {
     client.user.setActivity(getCommandArgvOneString(msg.content, "setstatus"));
-    msg.channel.send("complete");
+    sendMessage(msg.channel, "complete");
   }
   if (isThisCommand(msg.content, "delmsg")) {
     let noErr = false;
@@ -34,7 +35,7 @@ function onAdminCommand(msg, client) {
       messageId = argv[1];
       noErr = true;
     } catch (error) {
-      msg.channel.send(String(error));
+      sendMessage(msg.channel, String(error));
     }
     if (noErr) {
       getMsg(channelId, messageId, client)
@@ -42,7 +43,7 @@ function onAdminCommand(msg, client) {
           m.delete();
         })
         .catch(error => {
-          msg.channel.send(String(error));
+          sendMessage(msg.channel, String(error));
         });
     }
   }
@@ -56,16 +57,16 @@ function onAdminCommand(msg, client) {
       msgToSend = argv.slice(1, argv.length).join(" ");
       noErr = true;
     } catch (error) {
-      msg.channel.send(String(error));
+      sendMessage(msg.channel, String(error));
     }
     if (msgToSend && noErr) {
       client.channels
         .fetch(channelId)
         .then(c => {
-          c.send(msgToSend);
+          sendMessage(c, msgToSend);
         })
         .catch(error => {
-          msg.channel.send(String(error));
+          sendMessage(msg.channel, String(error));
         });
     }
   }
