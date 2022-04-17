@@ -3,6 +3,7 @@ const {
   getCommandArgv,
   getCommandArgvOneString,
 } = require("./commandBase");
+const { compMsg, errMsg, timeoutMsg } = require("./timeOutMsg");
 const { getMsg } = require("./getMsg");
 const { sendMessage } = require("./sendMessage");
 
@@ -10,9 +11,9 @@ function onAdminCommand(msg, client) {
   if (isThisCommand(msg.content, "exec")) {
     try {
       eval(getCommandArgvOneString(msg.content, "exec"));
-      sendMessage(msg.channel, "complete");
+      compMsg(msg.channel);
     } catch (e) {
-      sendMessage(msg.channel, String(e));
+      errMsg(msg.channel, e);
     }
   }
   if (isThisCommand(msg.content, "logout")) {
@@ -23,7 +24,7 @@ function onAdminCommand(msg, client) {
   }
   if (isThisCommand(msg.content, "setstatus")) {
     client.user.setActivity(getCommandArgvOneString(msg.content, "setstatus"));
-    sendMessage(msg.channel, "complete");
+    compMsg(msg.channel);
   }
   if (isThisCommand(msg.content, "delmsg")) {
     let noErr = false;
@@ -35,15 +36,40 @@ function onAdminCommand(msg, client) {
       messageId = argv[1];
       noErr = true;
     } catch (error) {
-      sendMessage(msg.channel, String(error));
+      compMsg.errMsg(msg.channel, error);
     }
     if (noErr) {
       getMsg(channelId, messageId, client)
         .then(m => {
           m.delete();
+          compMsg();
         })
         .catch(error => {
-          sendMessage(msg.channel, String(error));
+          errMsg(msg.channel, error);
+        });
+    }
+  }
+  if (isThisCommand(msg.content, "replymsg")) {
+    let noErr = false;
+    let channelId;
+    let messageId;
+    let msgToReply;
+    try {
+      const argv = getCommandArgv(msg.content, "replymsg");
+      channelId = argv[0];
+      messageId = argv[1];
+      msgToReply = argv.slice(2, argv.length).join(" ");
+      noErr = true;
+    } catch (error) {
+      compMsg.errMsg(msg.channel, error);
+    }
+    if (noErr && channelId && messageId && msgToReply) {
+      getMsg(channelId, messageId, client)
+        .then(m => {
+          m.reply(msgToReply);
+        })
+        .catch(error => {
+          errMsg(msg.channel, error);
         });
     }
   }
@@ -57,16 +83,16 @@ function onAdminCommand(msg, client) {
       msgToSend = argv.slice(1, argv.length).join(" ");
       noErr = true;
     } catch (error) {
-      sendMessage(msg.channel, String(error));
+      errMsg(msg.channel, error);
     }
-    if (msgToSend && noErr) {
+    if (channelId && msgToSend && noErr) {
       client.channels
         .fetch(channelId)
         .then(c => {
           sendMessage(c, msgToSend);
         })
         .catch(error => {
-          sendMessage(msg.channel, String(error));
+          errMsg(msg.channel, error);
         });
     }
   }

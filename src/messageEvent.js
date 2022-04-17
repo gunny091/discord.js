@@ -2,6 +2,7 @@ const { onAdminCommand } = require("./admincommands.js");
 const { onCommand } = require("./commands.js");
 const { logCF } = require("./log.js");
 const { ownerId } = require("../config.json");
+const { errMsg } = require("./timeOutMsg.js");
 
 function msgEvent(client) {
   client.on("messageCreate", msg => {
@@ -10,8 +11,7 @@ function msgEvent(client) {
 
     logCF(
       "Message Send",
-      `"${msg.content}" @${msg.author.tag}(${msg.author.id}) .${msg.guild.name}(${msg.guild.id}) #${msg.channel.name}(${msg.channel.id}) *${msg.id}`,
-      client
+      `"${msg.content}" @${msg.author.tag}(${msg.author.id}) .${msg.guild.name}(${msg.guild.id}) #${msg.channel.name}(${msg.channel.id}) *${msg.id}`
     );
     try {
       onCommand(msg, client);
@@ -19,21 +19,19 @@ function msgEvent(client) {
         onAdminCommand(msg, client);
       }
     } catch (error) {
-      msg.channel.send(String(error));
+      errMsg(msg.channel, error);
     }
   });
   client.on("messageUpdate", (oldMsg, newMsg) => {
     logCF(
       "Message Update",
-      `"${oldMsg.content}" => "${newMsg.content}" @${newMsg.author.tag}(${newMsg.author.id}) .${newMsg.guild.name}(${newMsg.guild.id}) #${newMsg.channel.name}(${newMsg.channel.id}) *${newMsg.id}`,
-      client
+      `"${oldMsg.content}" => "${newMsg.content}" @${newMsg.author.tag}(${newMsg.author.id}) .${newMsg.guild.name}(${newMsg.guild.id}) #${newMsg.channel.name}(${newMsg.channel.id}) *${newMsg.id}`
     );
   });
   client.on("messageDelete", msg => {
     logCF(
       "Message Delete",
-      `"${msg.content}" @${msg.author.tag}(${msg.author.id}) .${msg.guild.name}(${msg.guild.id}) #${msg.channel.name}(${msg.channel.id}) *${msg.id}`,
-      client
+      `"${msg.content}" @${msg.author.tag}(${msg.author.id}) .${msg.guild.name}(${msg.guild.id}) #${msg.channel.name}(${msg.channel.id}) *${msg.id}`
     );
   });
 }
