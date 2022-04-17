@@ -13,10 +13,13 @@ function msgEvent(client) {
       `"${msg.content}" @${msg.author.tag}(${msg.author.id}) .${msg.guild.name}(${msg.guild.id}) #${msg.channel.name}(${msg.channel.id}) *${msg.id}`,
       client
     );
-
-    onCommand(msg, client);
-    if (msg.author.id === ownerId) {
-      onAdminCommand(msg, client);
+    try {
+      onCommand(msg, client);
+      if (msg.author.id === ownerId) {
+        onAdminCommand(msg, client);
+      }
+    } catch (error) {
+      msg.channel.send(String(error));
     }
   });
   client.on("messageUpdate", (oldMsg, newMsg) => {

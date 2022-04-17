@@ -8,11 +8,13 @@ function isThisCommand(msgContent, _command) {
   );
 }
 function getCommandArgv(msgContent, command) {
+  const commandLength = `t/${command}`.length;
   if (isThisCommand(msgContent, command)) {
     return msgContent.substring(commandLength + 1).split(" ");
   }
 }
 function getCommandArgvOneString(msgContent, command) {
+  const commandLength = `t/${command}`.length;
   if (isThisCommand(msgContent, command)) {
     return msgContent.substring(commandLength + 1);
   }
