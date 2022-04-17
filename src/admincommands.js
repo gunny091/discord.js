@@ -1,56 +1,72 @@
+const {
+  isThisCommand,
+  getCommandArgv,
+  getCommandArgvOneString,
+} = require("./commandBase");
+const { getMsg } = require("./getMsg");
+
 function onAdminCommand(msg, client) {
-  if (msg.content.length > 7 && msg.content.substring(0, 6) === "t/exec") {
+  if (isThisCommand(msg.content, "exec")) {
     try {
-      eval(msg.content.substring(7));
+      eval(getCommandArgvOneString(msg.content, "exec"));
       msg.channel.send("complete");
-    } catch {
-      msg.channel.send("error");
+    } catch (e) {
+      msg.channel.send(String(e));
     }
   }
-  if (msg.content === "t/logout") {
+  if (isThisCommand(msg.content, "logout")) {
     msg.channel.send("logout");
     setTimeout(() => {
       process.exit(2);
     }, 1000);
   }
-  if (
-    msg.content.length > 12 &&
-    msg.content.substring(0, 11) === "t/setstatus"
-  ) {
-    client.user.setActivity(msg.content.substring(12));
+  if (isThisCommand(msg.content, "setstatus")) {
+    client.user.setActivity(getCommandArgvOneString(msg.content, "setstatus"));
     msg.channel.send("complete");
   }
-  if (msg.content.length > 9 && msg.content.substring(0, 8) === "t/delmsg") {
-    let error = false;
+  if (isThisCommand(msg.content, "delmsg")) {
+    let noErr = false;
+    let channelId;
+    let messageId;
     try {
-      const channelId = msg.content.substring(9).split(" ")[0];
-      const messageId = msg.content.substring(9).split(" ")[1];
+      const argv = getCommandArgv(msg.content, "delmsg");
+      channelId = argv[0];
+      messageId = argv[1];
+      noErr = true;
+    } catch (error) {
+      msg.channel.send(String(error));
+    }
+    if (noErr) {
+      getMsg(channelId, messageId, client)
+        .then(m => {
+          m.delete();
+        })
+        .catch(error => {
+          msg.channel.send(String(error));
+        });
+    }
+  }
+  if (isThisCommand(msg.content, "sendmsg")) {
+    let noErr = false;
+    let channelId = undefined;
+    let msgToSend = undefined;
+    try {
+      const argv = getCommandArgv(msg.content, "sendmsg");
+      channelId = argv[0];
+      msgToSend = argv.slice(1, argv.length).join(" ");
+      noErr = true;
+    } catch (error) {
+      msg.channel.send(String(error));
+    }
+    if (msgToSend && noErr) {
       client.channels
         .fetch(channelId)
         .then(c => {
-          const channel = c;
-          if (channel.isText) {
-            channel.fetch();
-            channel.messages
-              .fetch(messageId)
-              .then(m => {
-                m.delete();
-              })
-              .catch(() => {
-                error = true;
-              })
-              .then(() => {
-                if (error) {
-                  msg.channel.send("error");
-                }
-              });
-          }
+          c.send(msgToSend);
         })
-        .catch(() => {
-          error = true;
+        .catch(error => {
+          msg.channel.send(String(error));
         });
-    } catch {
-      error = true;
     }
   }
 }
