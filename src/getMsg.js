@@ -6,7 +6,6 @@ function getMsg(channelId, messageId, client) {
         .then(c => {
           const channel = c;
           if (channel.isText) {
-            channel.fetch();
             channel.messages
               .fetch(messageId)
               .then(m => {
