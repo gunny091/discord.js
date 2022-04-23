@@ -8,7 +8,9 @@ function compMsg(channel) {
     }, 20 * 1000);
     logCF(
       "Timeout Message Send",
-      `"${content}" @${client.user.tag}(${client.user.id}) .${channel.guild.name}(${channel.guild.id}) #${channel.name}(${channel.id}) *${m.id}`
+      `"${"complete"}" @${client.user.tag}(${client.user.id}) .${
+        channel.guild.name
+      }(${channel.guild.id}) #${channel.name}(${channel.id}) *${m.id}`
     );
   });
 }
@@ -19,7 +21,9 @@ function errMsg(channel, error) {
     }, 20 * 1000);
     logCF(
       "Timeout Message Send",
-      `"${content}" @${client.user.tag}(${client.user.id}) .${channel.guild.name}(${channel.guild.id}) #${channel.name}(${channel.id}) *${m.id}`
+      `"${String(error)}" @${client.user.tag}(${client.user.id}) .${
+        channel.guild.name
+      }(${channel.guild.id}) #${channel.name}(${channel.id}) *${m.id}`
     );
   });
 }

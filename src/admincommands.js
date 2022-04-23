@@ -36,13 +36,13 @@ function onAdminCommand(msg, client) {
       messageId = argv[1];
       noErr = true;
     } catch (error) {
-      compMsg.errMsg(msg.channel, error);
+      errMsg(msg.channel, error);
     }
-    if (noErr) {
+    if (noErr && channelId && messageId) {
       getMsg(channelId, messageId, client)
         .then(m => {
           m.delete();
-          compMsg();
+          compMsg(msg.channel);
         })
         .catch(error => {
           errMsg(msg.channel, error);
