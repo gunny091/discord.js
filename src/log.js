@@ -6,8 +6,8 @@ import { client } from "./client.js";
 const fs = require("fs");
 const msgLogFilePath = "./log/msglog.txt";
 
-export function logCF(name, content) {
-  const text = `| ${new Date().toString()} [${name}] ${content}`;
+export function logCF(name, content, meta) {
+  const text = `| ${new Date().toString()} [${name}] \`\`\`${content}\`\`\` ${meta}`;
   console.log(text);
 
   !fs.existsSync(msgLogFilePath) ? fs.writeFileSync(msgLogFilePath, "") : null;

@@ -13,7 +13,8 @@ export function msgEvent(client) {
 
     logCF(
       "Message Send",
-      `"${msg.content}" @${msg.author.tag}(${msg.author.id}) .${msg.guild.name}(${msg.guild.id}) #${msg.channel.name}(${msg.channel.id}) *${msg.id}`
+      msg.content,
+      `@${msg.author.tag}(${msg.author.id}) .${msg.guild.name}(${msg.guild.id}) #${msg.channel.name}(${msg.channel.id}) *${msg.id}`
     );
     try {
       onCommand(msg, client);
@@ -25,11 +26,12 @@ export function msgEvent(client) {
     }
   });
   client.on("messageUpdate", (oldMsg, newMsg) => {
-    if (msg.author.bot) return;
-    if (msg.author.id === client.user.id) return;
+    if (newMsg.author.bot) return;
+    if (newMsg.author.id === client.user.id) return;
     logCF(
       "Message Update",
-      `"${oldMsg.content}" => "${newMsg.content}" @${newMsg.author.tag}(${newMsg.author.id}) .${newMsg.guild.name}(${newMsg.guild.id}) #${newMsg.channel.name}(${newMsg.channel.id}) *${newMsg.id}`
+      newMsg.content,
+      `<= "${oldMsg.content}" @${newMsg.author.tag}(${newMsg.author.id}) .${newMsg.guild.name}(${newMsg.guild.id}) #${newMsg.channel.name}(${newMsg.channel.id}) *${newMsg.id}`
     );
   });
   client.on("messageDelete", msg => {
@@ -37,7 +39,8 @@ export function msgEvent(client) {
     if (msg.author.id === client.user.id) return;
     logCF(
       "Message Delete",
-      `"${msg.content}" @${msg.author.tag}(${msg.author.id}) .${msg.guild.name}(${msg.guild.id}) #${msg.channel.name}(${msg.channel.id}) *${msg.id}`
+      msg.content,
+      `@${msg.author.tag}(${msg.author.id}) .${msg.guild.name}(${msg.guild.id}) #${msg.channel.name}(${msg.channel.id}) *${msg.id}`
     );
   });
 }
