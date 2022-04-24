@@ -17,7 +17,8 @@ export function logCF(name, content, meta, discordEmbedColor = "#000000") {
     .setColor(discordEmbedColor)
     .addFields(
       { name: "Content", value: content },
-      { name: "Info", value: meta }
+      { name: "Info", value: meta },
+      { name: "Time", value: new Date().toString() }
     );
   console.log(text);
 

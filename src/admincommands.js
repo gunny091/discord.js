@@ -17,10 +17,10 @@ export function onAdminCommand(msg, client) {
     }
   }
   if (isThisCommand(msg.content, "logout")) {
-    sendMessage(msg.channel, "logout");
+    timeoutMsg(msg.channel, "logout", 1000);
     setTimeout(() => {
       process.exit(2);
-    }, 1000);
+    }, 5000);
   }
   if (isThisCommand(msg.content, "setstatus")) {
     client.user.setActivity(getCommandArgvOneString(msg.content, "setstatus"));
