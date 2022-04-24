@@ -1,10 +1,12 @@
-const { onAdminCommand } = require("./admincommands.js");
-const { onCommand } = require("./commands.js");
-const { logCF } = require("./log.js");
+import { createRequire } from "module"; // Bring in the ability to create the 'require' method
+const require = createRequire(import.meta.url); // construct the require method
 const { ownerId } = require("../config.json");
-const { errMsg } = require("./timeOutMsg.js");
+import { onAdminCommand } from "./admincommands.js";
+import { onCommand } from "./commands.js";
+import { logCF } from "./log.js";
+import { errMsg } from "./timeOutMsg.js";
 
-function msgEvent(client) {
+export function msgEvent(client) {
   client.on("messageCreate", msg => {
     if (msg.author.bot) return;
     if (msg.author.id === client.user.id) return;
@@ -35,4 +37,3 @@ function msgEvent(client) {
     );
   });
 }
-module.exports = { msgEvent };

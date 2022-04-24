@@ -1,4 +1,4 @@
-function isThisCommand(msgContent, _command) {
+export function isThisCommand(msgContent, _command) {
   const command = `t/${_command}`;
   const commandLength = command.length;
   return (
@@ -7,16 +7,15 @@ function isThisCommand(msgContent, _command) {
     msgContent === command
   );
 }
-function getCommandArgv(msgContent, command) {
+export function getCommandArgv(msgContent, command) {
   const commandLength = `t/${command}`.length;
   if (isThisCommand(msgContent, command)) {
     return msgContent.substring(commandLength + 1).split(" ");
   }
 }
-function getCommandArgvOneString(msgContent, command) {
+export function getCommandArgvOneString(msgContent, command) {
   const commandLength = `t/${command}`.length;
   if (isThisCommand(msgContent, command)) {
     return msgContent.substring(commandLength + 1);
   }
 }
-module.exports = { isThisCommand, getCommandArgv, getCommandArgvOneString };

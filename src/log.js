@@ -1,10 +1,12 @@
+import { createRequire } from "module"; // Bring in the ability to create the 'require' method
+const require = createRequire(import.meta.url); // construct the require method
 const { consoleChannel } = require("../config.json");
-const { client } = require("./client");
+import { client } from "./client.js";
 
 const fs = require("fs");
 const msgLogFilePath = "./log/msglog.txt";
 
-function logCF(name, content) {
+export function logCF(name, content) {
   const text = `| ${new Date().toString()} [${name}] ${content}`;
   console.log(text);
 
@@ -20,4 +22,3 @@ function logCF(name, content) {
     })
     .catch(() => {});
 }
-module.exports = { logCF };

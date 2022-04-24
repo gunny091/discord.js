@@ -1,13 +1,13 @@
-const {
+import {
   isThisCommand,
   getCommandArgv,
   getCommandArgvOneString,
-} = require("./commandBase");
-const { compMsg, errMsg, timeoutMsg } = require("./timeOutMsg");
-const { getMsg } = require("./getMsg");
-const { sendMessage } = require("./sendMessage");
+} from "./commandBase.js";
+import { compMsg, errMsg, timeoutMsg } from "./timeOutMsg.js";
+import { getMsg } from "./getMsg.js";
+import { sendMessage } from "./sendMessage.js";
 
-function onAdminCommand(msg, client) {
+export function onAdminCommand(msg, client) {
   if (isThisCommand(msg.content, "exec")) {
     try {
       eval(getCommandArgvOneString(msg.content, "exec"));
@@ -97,4 +97,3 @@ function onAdminCommand(msg, client) {
     }
   }
 }
-module.exports = { onAdminCommand };

@@ -1,4 +1,4 @@
-function getMsg(channelId, messageId, client) {
+export function getMsg(channelId, messageId, client) {
   return new Promise((resolve, reject) => {
     try {
       client.channels
@@ -24,4 +24,3 @@ function getMsg(channelId, messageId, client) {
     }
   });
 }
-module.exports = { getMsg };

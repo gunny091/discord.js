@@ -1,7 +1,7 @@
-const { logCF } = require("./log");
-const { client } = require("./client");
+import { logCF } from "./log.js";
+import { client } from "./client.js";
 
-function sendMessage(channel, content) {
+export function sendMessage(channel, content) {
   channel.send(content).then(m => {
     logCF(
       "Message Send",
@@ -9,4 +9,3 @@ function sendMessage(channel, content) {
     );
   });
 }
-module.exports = { sendMessage };

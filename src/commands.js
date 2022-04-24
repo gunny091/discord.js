@@ -1,11 +1,11 @@
-const {
+import {
   isThisCommand,
   getCommandArgv,
   getCommandArgvOneString,
-} = require("./commandBase");
-const { sendMessage } = require("./sendMessage");
+} from "./commandBase.js";
+import { sendMessage } from "./sendMessage.js";
 
-function onCommand(msg, client) {
+export function onCommand(msg, client) {
   if (msg.content === "ping") {
     sendMessage(msg.channel, `${msg.author} pong`);
   }
@@ -13,4 +13,3 @@ function onCommand(msg, client) {
     sendMessage(msg.channel, getCommandArgvOneString(msg.content, "say"));
   }
 }
-module.exports = { onCommand };

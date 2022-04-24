@@ -1,7 +1,5 @@
-const { Client, Intents } = require("discord.js");
+import { Client, Intents } from "discord.js";
 
-const client = new Client({
+export const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
 });
-
-module.exports = { client };
