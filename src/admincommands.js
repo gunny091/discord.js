@@ -39,7 +39,7 @@ export function onAdminCommand(msg, client) {
       errMsg(msg.channel, error);
     }
     if (noErr && channelId && messageId) {
-      getMsg(channelId, messageId, client)
+      getMsg(channelId, messageId)
         .then(m => {
           m.delete();
           compMsg(msg.channel);
@@ -64,7 +64,7 @@ export function onAdminCommand(msg, client) {
       compMsg.errMsg(msg.channel, error);
     }
     if (noErr && channelId && messageId && msgToReply) {
-      getMsg(channelId, messageId, client)
+      getMsg(channelId, messageId)
         .then(m => {
           m.reply(msgToReply);
         })

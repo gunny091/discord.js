@@ -1,4 +1,5 @@
-export function getMsg(channelId, messageId, client) {
+import { client } from "./client.js";
+export function getMsg(channelId, messageId) {
   return new Promise((resolve, reject) => {
     try {
       client.channels
