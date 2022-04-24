@@ -8,13 +8,16 @@ import { errMsg } from "./timeOutMsg.js";
 
 export function msgEvent(client) {
   client.on("messageCreate", msg => {
-    if (msg.author.bot) return;
+    let color = "#000000";
     if (msg.author.id === client.user.id) return;
-
+    if (msg.author.bot) {
+      color = "#777777";
+    }
     logCF(
       "Message Send",
       msg.content,
-      `@${msg.author.tag}(${msg.author.id}) .${msg.guild.name}(${msg.guild.id}) #${msg.channel.name}(${msg.channel.id}) *${msg.id}`
+      `@${msg.author.tag}(${msg.author.id}) .${msg.guild.name}(${msg.guild.id}) #${msg.channel.name}(${msg.channel.id}) *${msg.id}`,
+      color
     );
     try {
       onCommand(msg, client);
@@ -26,21 +29,27 @@ export function msgEvent(client) {
     }
   });
   client.on("messageUpdate", (oldMsg, newMsg) => {
-    if (newMsg.author.bot) return;
-    if (newMsg.author.id === client.user.id) return;
+    let color = "#0000FF";
+    if (newMsg.author.bot) {
+      color = "#7777FF";
+    }
     logCF(
       "Message Update",
-      newMsg.content,
-      `<= "${oldMsg.content}" @${newMsg.author.tag}(${newMsg.author.id}) .${newMsg.guild.name}(${newMsg.guild.id}) #${newMsg.channel.name}(${newMsg.channel.id}) *${newMsg.id}`
+      `${newMsg.content}\n=>\n${oldMsg.content}`,
+      `@${newMsg.author.tag}(${newMsg.author.id}) .${newMsg.guild.name}(${newMsg.guild.id}) #${newMsg.channel.name}(${newMsg.channel.id}) *${newMsg.id}`,
+      color
     );
   });
   client.on("messageDelete", msg => {
-    if (msg.author.bot) return;
-    if (msg.author.id === client.user.id) return;
+    let color = "#FF0000";
+    if (msg.author.bot) {
+      color = "#FF7777";
+    }
     logCF(
       "Message Delete",
       msg.content,
-      `@${msg.author.tag}(${msg.author.id}) .${msg.guild.name}(${msg.guild.id}) #${msg.channel.name}(${msg.channel.id}) *${msg.id}`
+      `@${msg.author.tag}(${msg.author.id}) .${msg.guild.name}(${msg.guild.id}) #${msg.channel.name}(${msg.channel.id}) *${msg.id}`,
+      color
     );
   });
 }
