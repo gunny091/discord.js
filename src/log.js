@@ -43,13 +43,6 @@ export function logCF(
 
     console.log(text);
 
-    !fs.existsSync(msgLogFilePath)
-      ? fs.writeFileSync(msgLogFilePath, "")
-      : null;
-    fs.appendFile(msgLogFilePath, text + "\n", err => {
-      if (err) throw err;
-    });
-
     client.channels
       .fetch(consoleChannel)
       .then(c => {
