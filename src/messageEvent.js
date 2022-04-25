@@ -13,11 +13,23 @@ export function msgEvent(client) {
     if (msg.author.bot) {
       color = "#777777";
     }
+    let content = msg.content;
+    if (!content || content === "") {
+      content += "[Empty Message]";
+    }
+    let atch = "";
+    if (msg.attachments) {
+      const attachments = msg.attachments;
+      attachments.forEach((v, k) => {
+        atch += v.url + "\n";
+      });
+    }
     logCF(
       "Message Send",
       msg.content,
       `@${msg.author.tag}(${msg.author.id}) .${msg.guild.name}(${msg.guild.id}) #${msg.channel.name}(${msg.channel.id}) *${msg.id}`,
-      color
+      color,
+      atch
     );
     try {
       onCommand(msg, client);

@@ -1,7 +1,5 @@
-const p = new Promise((resolve, reject, a) => {
-  resolve(a);
-});
-
-p(1).then(a => {
-  console.log(a);
-});
+function test(n) {
+  n = 2;
+  console.log(n);
+}
+test(1);
